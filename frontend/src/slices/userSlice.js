@@ -29,14 +29,23 @@ export const registerUser = createAsyncThunk('register_user', async ({ companyNa
   }
 });
 
-export const getUserList = createAsyncThunk('get_userlist', async ({token, keyword}, thunkAPI) => {
+export const getUserList = createAsyncThunk('get_userlist', async ({ token, keyword }, thunkAPI) => {
   try {
     return await userService.getUserList(token, keyword);
   } catch (err) {
     const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString();
     return thunkAPI.rejectWithValue(message);
   }
-})
+});
+
+export const sortByField = createAsyncThunk('sort_by_name', async ({columnName, sortDirection, token}, thunkAPI) => {
+  try {
+    return await userService.sortByField({columnName, sortDirection, token});
+  } catch (err) {
+    const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
 
 const userSlice = createSlice({
   name: 'user',
@@ -83,6 +92,17 @@ const userSlice = createSlice({
         state.userList = action.payload
       })
       .addCase(getUserList.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+      })
+      .addCase(sortByField.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(sortByField.fulfilled, (state, action) => {
+        state.loading = false
+        state.userList = action.payload
+      })
+      .addCase(sortByField.rejected, (state, action) => {
         state.loading = false
         state.error = action.payload
     })

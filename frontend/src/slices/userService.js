@@ -22,19 +22,30 @@ const registerUser = async ({ companyName, email, password, province, taxNumber,
   return data;
 };
 
-const getUserList = async (token, keyword='') => {
+const getUserList = async (token, keyword = '') => {
   const config = {
     headers: {
-      Authorization:`Bearer ${token}`
+      Authorization: `Bearer ${token}`
     }
   }
   const { data } = await axios.get(`/api/users?keyword=${keyword}`, config);
   return data;
-}
+};
+
+const sortByField = async ({ columnName, sortDirection, token }) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }
+  const { data } = await axios.get(`api/users/sort/${columnName},${sortDirection}`, config);
+  return data;
+};
+
 
 
 const userService = {
-  loginUser, registerUser, getUserList
+  loginUser, registerUser, getUserList, sortByField
 };
 
 export default userService;

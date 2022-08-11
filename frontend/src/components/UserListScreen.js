@@ -1,19 +1,20 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import {  Table,Container } from 'react-bootstrap';
-import { getUserList } from '../slices/userSlice';
+import { getUserList, sortByField} from '../slices/userSlice';
 import SearchBox from './SearchBox';
 import Message from './Message';
+import orderBy from 'lodash/orderBy';
 
 
 const UserListScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+  const [columnToSort, setColumnToSort] = useState('');
+  const [sortDirection, setSortDirection] = useState('desc');
   
   const { keyword } = useParams();
-  console.log(keyword)
 
   const { userInfo, userList, loading, error } = useSelector(state => state.user);
  
@@ -21,29 +22,42 @@ const UserListScreen = () => {
     if (!userInfo) {
       return navigate('/login')
     };
-    dispatch(getUserList({ token:userInfo.token, keyword }));
-  }, [userInfo, navigate, dispatch,keyword]);
+    dispatch(getUserList({ token: userInfo.token, keyword }));
+  }, [userInfo, navigate, dispatch, keyword]);
 
-  
+
+  const invertDirection = {
+    asc: "desc",
+    desc: "asc"
+};
+
+ const  handleSort =(columnName)=> {
+   setColumnToSort(columnName);
+   setSortDirection(columnToSort === columnName ? invertDirection[sortDirection] : 'asc');
+   dispatch(sortByField({columnName, sortDirection, token:userInfo.token}));
+}
+
   return (
+  
     <Container>
       <h3 className='mt-4'>Client List</h3>
       <SearchBox />
     
-    <Table striped bordered hover>
+      <Table
+        striped bordered hover responsive>
       <thead>
-        <tr>
-        <th>Company Name</th>
-        <th>Province</th>
-        <th>Tax Number</th>
-        <th>Tax Office</th>
-        <th>Count of Invoice</th>
-        <th>Contact Number</th>
+          <tr>
+            <th style={{cursor:'pointer'}} onClick={()=>handleSort('companyName')}>Company Name</th>
+            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('province')}>Province</th>
+            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('taxNumber')}>Tax Number</th>
+            <th style={{cursor:'pointer'}} onClick={()=>handleSort('taxOffice')}>Tax Office</th>
+            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('countInvoice')}>Count of Invoice</th>
+            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('contactNumber')}>Contact Number</th>
         </tr>
       </thead>
       <tbody>
         {
-            (!userList || userList.length < 1) ? <><Message variant='danger'>No results found...</Message><Link className='btn btn-dark d-flex' style={{textAlign:'center'}}  to='/userlist'>Back to Client List</Link></> : userList.map(user => (
+            (!userList || userList.length < 1) ? <><Message variant='danger'>No results found...</Message><Link className='btn btn-dark d-flex' to='/userlist'>Back to Client List</Link></> : userList.map(user => (
             <tr key={user._id}>
               <td>{user.companyName}</td>
               <td>{user.province}</td>

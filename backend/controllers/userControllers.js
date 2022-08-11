@@ -64,5 +64,20 @@ const getUserList = asyncHandler(async (req, res) => {
 
 });
 
+// Sorts users by field
+// GET api/users/sort
+// Private
 
-export { loginUser, registerUser, getUserList }
+const sortUserByName = asyncHandler(async (req, res) => {
+  const field = req.params.sort.split(',')[0];
+  const direction = req.params.sort.split(',')[1];
+  console.log(field);
+  console.log(direction);
+  const sortedUsers = await User.find({}).sort([[field, direction]]);
+  res.json(sortedUsers);
+
+});
+
+
+
+export { loginUser, registerUser, getUserList, sortUserByName}
