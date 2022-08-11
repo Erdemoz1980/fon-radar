@@ -5,7 +5,6 @@ import {  Table,Container } from 'react-bootstrap';
 import { getUserList, sortByField} from '../slices/userSlice';
 import SearchBox from './SearchBox';
 import Message from './Message';
-import orderBy from 'lodash/orderBy';
 
 
 const UserListScreen = () => {
