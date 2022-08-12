@@ -40,27 +40,27 @@ const UserListScreen = () => {
   return (
   
     <Container>
-      <h3 className='mt-4'>Client List</h3>
+      <h3 className='mt-4'>Musteri Listesi</h3>
       <SearchBox />
-    
+      <Link to='/userlist' className='btn btn-dark mb-3'>Musteri Listesi</Link>
       <Table
         striped bordered hover responsive>
       <thead>
           <tr>
-            <th style={{cursor:'pointer'}} onClick={()=>handleSort('companyName')}>Company Name</th>
-            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('province')}>Province</th>
-            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('taxNumber')}>Tax Number</th>
-            <th style={{cursor:'pointer'}} onClick={()=>handleSort('taxOffice')}>Tax Office</th>
-            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('countInvoice')}>Count of Invoice</th>
-            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('contactNumber')}>Contact Number</th>
+            <th style={{cursor:'pointer'}} onClick={()=>handleSort('companyName')}>Ticaret Unvani</th>
+            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('province')}>Il</th>
+            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('taxNumber')}>Vergi Numarasi</th>
+            <th style={{cursor:'pointer'}} onClick={()=>handleSort('taxOffice')}>Vergi Dairesi</th>
+            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('countInvoice')}>Fatura Numarasi</th>
+            <th style={{ cursor: 'pointer' }} onClick={() => handleSort('contactNumber')}>Telefon Numarasi</th>
         </tr>
       </thead>
       <tbody>
         {
-            (!userList || userList.length < 1) ? <><Message variant='danger'>No results found...</Message><Link className='btn btn-dark d-flex' to='/userlist'>Back to Client List</Link></> : userList.map(user => (
+            (!userList || userList.length < 1) ? <Message variant='danger'>Bu isimde veya numarada kayit bulunamadi</Message> : userList.map(user => (
               
-              <LinkContainer to={`/user/profile/${user._id}`} style={{cursor:'pointer'}}>
-              <tr key={user._id}>
+              <LinkContainer key={user._id} to={`/user/profile/${user._id}`} style={{cursor:'pointer'}}>
+              <tr >
                 
                 <td>{user.companyName}</td>
                 <td>{user.province}</td>

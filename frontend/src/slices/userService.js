@@ -38,7 +38,7 @@ const sortByField = async ({ columnName, sortDirection, token }) => {
       Authorization: `Bearer ${token}`
     }
   }
-  const { data } = await axios.get(`api/users/sort/${columnName},${sortDirection}`, config);
+  const { data } = await axios.get(`/api/users/sort/${columnName},${sortDirection}`, config);
   return data;
 };
 
@@ -48,14 +48,27 @@ const getUserDetails = async (userId, token) => {
       Authorization: `Bearer ${token}`
     }
   };
-  const { data } = await axios.get(`api/users/profile/${userId}`, config);
+  const { data } = await axios.get(`/api/users/profile/${userId}`, config);
   return data;
-}
+};
+
+
+const updateUser = async (user, token) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+  };
+
+  const { data } = await axios.put(`/api/users/update/${user._id}`, user, config);
+  return data
+};
 
 
 
 const userService = {
-  loginUser, registerUser, getUserList, getUserDetails, sortByField
+  loginUser, registerUser, getUserList, getUserDetails, sortByField, updateUser
 };
 
 export default userService;

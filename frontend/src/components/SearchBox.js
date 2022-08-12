@@ -11,6 +11,7 @@ const SearchBox = () => {
     e.preventDefault();
     if (keyword.trim()) {
       navigate(`/search/${keyword}`)
+      setKeyword('');
     } else {
       navigate('/userlist')
     }
@@ -19,7 +20,7 @@ const SearchBox = () => {
   return (
     <Form onSubmit={submitHandler} className='d-flex mb-3'>
       <Form.Control
-          placeholder='Search by name or tax number...'
+          placeholder='Isim veya vergi numarasiyla arayin...'
           type='text'
           value={keyword}
           onChange={e=>setKeyword(e.target.value)}

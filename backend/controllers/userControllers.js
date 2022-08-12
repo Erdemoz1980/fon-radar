@@ -13,7 +13,7 @@ const loginUser = asyncHandler(async (req, res) => {
   if (user && await user.matchPassword(password)) {
     res.status(200).json({
       _id: user._id,
-      name: user.name,
+      companyName: user.companyName,
       email: user.email,
       token: generateToken(user._id)
     })
@@ -40,7 +40,7 @@ const registerUser = asyncHandler(async (req, res) => {
   if (newUser) {
     res.status(201).json({
       _id: newUser._id,
-      name: newUser.name,
+      companyName: newUser.companyName,
       email: newUser.email,
       token: generateToken(newUser._id)
     })
@@ -85,10 +85,44 @@ const getUserDetails = asyncHandler(async (req, res) => {
   if (user) {
     res.status(200).json(user);
   } else {
-    res.status(404).json({error:'User not found'})
-   }
+    res.status(404).json({ error: 'User not found' })
+  }
+});
 
+//  Updates user details
+//  Put /api/users/profile/update/:id
+//  Private
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (user) {
+    user.companyName = req.body.companyName || user.companyName
+    if(req.body.password) {
+      user.password = req.body.password
+    }
+    user.email = req.body.email || user.email
+    user.province = req.body.province || user.province
+    user.taxNumber = req.body.taxNumber || user.taxNumber
+    user.taxOffice = req.body.taxOffice || user.taxOffice
+    user.countInvoice = req.body.countInvoice || user.countInvoice
+    user.contactNumber = req.body.contactNumber || user.contactNumber
+    user.activityArea = req.body.activityArea || user.activityArea
+    user.guarantee = req.body.guarantee || user.guarantee
+    user.capital = req.body.capital || user.capital
+    user.profitInfo = req.body.profitInfo || user.profitInfo
+    user.terms = req.body.terms || user.terms
+      
+   
+
+    const updatedUser = await user.save();
+    
+    res.status(200).json(updatedUser);
+      
+  } else {
+    res.status(404).json({ error: 'User not found' });
+  }
 })
+
+
 
 
 
@@ -97,5 +131,6 @@ export {
   registerUser,
   getUserList,
   getUserDetails,
-  sortUserByName
+  sortUserByName,
+  updateUserProfile
 }
