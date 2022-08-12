@@ -4,6 +4,7 @@ import './bootstrap.min.css';
 import LoginScreen from './components/LoginScreen';
 import RegisterUserScreen from './components/RegisterUserScreen';
 import UserListScreen from './components/UserListScreen';
+import UserProfileScreen from './components/UserProfileScreen';
 import HomeScreen from './components/HomeScreen';
 import Header from './components/Header';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -24,6 +25,7 @@ const App = () => {
               <Route path='/register' element={<RegisterUserScreen />} />
               <Route path='/userlist' element={<UserListScreen />} />
               <Route path='/search/:keyword' element={<UserListScreen />} />
+              <Route path='/user/profile/:id' element={<UserProfileScreen />} />
             </Routes> 
             </Container>
             </BrowserRouter>

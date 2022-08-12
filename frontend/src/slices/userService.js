@@ -42,10 +42,20 @@ const sortByField = async ({ columnName, sortDirection, token }) => {
   return data;
 };
 
+const getUserDetails = async (userId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  };
+  const { data } = await axios.get(`api/users/profile/${userId}`, config);
+  return data;
+}
+
 
 
 const userService = {
-  loginUser, registerUser, getUserList, sortByField
+  loginUser, registerUser, getUserList, getUserDetails, sortByField
 };
 
 export default userService;

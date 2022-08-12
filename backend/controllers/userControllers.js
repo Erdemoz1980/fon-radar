@@ -71,13 +71,31 @@ const getUserList = asyncHandler(async (req, res) => {
 const sortUserByName = asyncHandler(async (req, res) => {
   const field = req.params.sort.split(',')[0];
   const direction = req.params.sort.split(',')[1];
-  console.log(field);
-  console.log(direction);
   const sortedUsers = await User.find({}).sort([[field, direction]]);
   res.json(sortedUsers);
 
 });
 
+// Gets user details
+// GET api/users/profile/:id
+// Private
+
+const getUserDetails = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (user) {
+    res.status(200).json(user);
+  } else {
+    res.status(404).json({error:'User not found'})
+   }
+
+})
 
 
-export { loginUser, registerUser, getUserList, sortUserByName}
+
+export {
+  loginUser,
+  registerUser,
+  getUserList,
+  getUserDetails,
+  sortUserByName
+}

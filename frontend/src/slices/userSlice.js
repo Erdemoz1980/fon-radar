@@ -47,6 +47,16 @@ export const sortByField = createAsyncThunk('sort_by_name', async ({columnName, 
   }
 });
 
+export const getUserDetails = createAsyncThunk('get_user_details', async ({ userId, token }, thunkAPI) => {
+  try {
+    console.log(userId, token);
+    return await userService.getUserDetails(userId, token);
+  } catch (err) {
+    const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
 const userSlice = createSlice({
   name: 'user',
   initialState,

@@ -24,7 +24,6 @@ const userSchema = mongoose.Schema({
   countInvoice: { type: String, required: true },
   contactNumber: { type: Number, required: true },
   activityArea:{type:String},
-  activityArea: { type: String },
   guarantee: { type: Number },
   capital: { type: Number },
   profitInfo: [profitInfoSchema],

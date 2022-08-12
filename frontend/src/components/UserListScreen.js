@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import {  Table,Container } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import {  Table, Container } from 'react-bootstrap';
 import { getUserList, sortByField} from '../slices/userSlice';
 import SearchBox from './SearchBox';
 import Message from './Message';
@@ -57,14 +58,20 @@ const UserListScreen = () => {
       <tbody>
         {
             (!userList || userList.length < 1) ? <><Message variant='danger'>No results found...</Message><Link className='btn btn-dark d-flex' to='/userlist'>Back to Client List</Link></> : userList.map(user => (
-            <tr key={user._id}>
-              <td>{user.companyName}</td>
-              <td>{user.province}</td>
-              <td>{user.taxNumber}</td>
-              <td>{user.taxOffice}</td>
-              <td>{user.countInvoice}</td>
-              <td>{user.contactNumber}</td>
-            </tr>
+              
+              <LinkContainer to={`/user/profile/${user._id}`} style={{cursor:'pointer'}}>
+              <tr key={user._id}>
+                
+                <td>{user.companyName}</td>
+                <td>{user.province}</td>
+                <td>{user.taxNumber}</td>
+                <td>{user.taxOffice}</td>
+                <td>{user.countInvoice}</td>
+                <td>{user.contactNumber}</td>
+           
+                </tr>
+                </LinkContainer>
+               
           ))
         }
       
